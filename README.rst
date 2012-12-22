@@ -31,6 +31,8 @@ A quick example of hashing a string::
 Testing
 =======
 
-Sadly, the unit tests I originally had seem to be lost to time. I will
-most probably replace them when I get a chance. I don't consider this
-library complete without them.
+To run the included unit tests, execute::
+
+    python test.py
+
+in the current directory.
