@@ -1,3 +1,5 @@
+.. image:: https://travis-ci.org/thomdixon/pysha2.svg?branch=master
+    :target: https://travis-ci.org/thomdixon/pysha2
 
 ======
 pysha2
