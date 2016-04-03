@@ -46,7 +46,7 @@ class sha256(object):
                     
     def _sha256_process(self, c):
         w = [0]*64
-        w[0:15] = struct.unpack('!16L', c)
+        w[0:16] = struct.unpack('!16L', c)
         
         for i in range(16, 64):
             s0 = self._rotr(w[i-15], 7) ^ self._rotr(w[i-15], 18) ^ (w[i-15] >> 3)
