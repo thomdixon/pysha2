@@ -50,7 +50,7 @@ class sha512(object):
                    
     def _sha512_process(self, chunk):
         w = [0]*80
-        w[0:15] = struct.unpack('!16Q', chunk)
+        w[0:16] = struct.unpack('!16Q', chunk)
        
         for i in range(16, 80):
             s0 = self._rotr(w[i-15], 1) ^ self._rotr(w[i-15], 8) ^ (w[i-15] >> 7)
