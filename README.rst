@@ -5,6 +5,12 @@
 pysha2
 ======
 
+License
+=======
+
+This software is distributed under the 
+`MIT License <https://choosealicense.com/licenses/mit/>`_.
+
 About
 =====
 
@@ -13,8 +19,8 @@ standard. I originally wrote and published this on the web prior to
 the inclusion of ``hashlib`` into the Python standard
 library. Unfortunately, the original source was lost due to a hard
 drive failure. Fortunately, the library proved useful to some at the
-time (due to the prevalence of Python 2.3 and 2.4), and so I have been
-able to recover all but the unit tests.
+time (due to the prevalence of Python 2.3 and 2.4), and so I was able
+to recover all but the unit tests (which I later rewrote).
 
 Usage
 =====
@@ -37,4 +43,4 @@ To run the included unit tests, execute::
 
     python test.py
 
-in the current directory.
+in the current directory or run with ``nosetests``.
