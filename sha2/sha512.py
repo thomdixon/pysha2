@@ -31,34 +31,34 @@ class sha512(object):
     _h = (0x6a09e667f3bcc908L, 0xbb67ae8584caa73bL, 0x3c6ef372fe94f82bL, 0xa54ff53a5f1d36f1L,
           0x510e527fade682d1L, 0x9b05688c2b3e6c1fL, 0x1f83d9abfb41bd6bL, 0x5be0cd19137e2179L)
     _output_size = 8
-   
+
     blocksize = 1
     block_size = 128
     digest_size = 64
-   
-    def __init__(self, m=None):       
+
+    def __init__(self, m=None):
         self._buffer = ''
         self._counter = 0
-       
+
         if m is not None:
             if type(m) is not str:
                 raise TypeError, '%s() argument 1 must be string, not %s' % (self.__class__.__name__, type(m).__name__)
             self.update(m)
-       
+
     def _rotr(self, x, y):
         return ((x >> y) | (x << (64-y))) & 0xFFFFFFFFFFFFFFFF
-                   
+
     def _sha512_process(self, chunk):
         w = [0]*80
         w[0:16] = struct.unpack('!16Q', chunk)
-       
+
         for i in range(16, 80):
             s0 = self._rotr(w[i-15], 1) ^ self._rotr(w[i-15], 8) ^ (w[i-15] >> 7)
             s1 = self._rotr(w[i-2], 19) ^ self._rotr(w[i-2], 61) ^ (w[i-2] >> 6)
             w[i] = (w[i-16] + s0 + w[i-7] + s1) & 0xFFFFFFFFFFFFFFFF
-       
+
         a,b,c,d,e,f,g,h = self._h
-       
+
         for i in range(80):
             s0 = self._rotr(a, 28) ^ self._rotr(a, 34) ^ self._rotr(a, 39)
             maj = (a & b) ^ (a & c) ^ (b & c)
@@ -66,7 +66,7 @@ class sha512(object):
             s1 = self._rotr(e, 14) ^ self._rotr(e, 18) ^ self._rotr(e, 41)
             ch = (e & f) ^ ((~e) & g)
             t1 = h + s1 + ch + self._k[i] + w[i]
-           
+
             h = g
             g = f
             f = e
@@ -75,37 +75,37 @@ class sha512(object):
             c = b
             b = a
             a = (t1 + t2) & 0xFFFFFFFFFFFFFFFF
-           
+
         self._h = [(x+y) & 0xFFFFFFFFFFFFFFFF for x,y in zip(self._h, [a,b,c,d,e,f,g,h])]
-       
+
     def update(self, m):
         if not m:
             return
         if type(m) is not str:
             raise TypeError, '%s() argument 1 must be string, not %s' % (sys._getframe().f_code.co_name, type(m).__name__)
-       
+
         self._buffer += m
         self._counter += len(m)
-       
+
         while len(self._buffer) >= 128:
             self._sha512_process(self._buffer[:128])
             self._buffer = self._buffer[128:]
-           
+
     def digest(self):
         mdi = self._counter & 0x7F
         length = struct.pack('!Q', self._counter<<3)
-       
+
         if mdi < 112:
             padlen = 111-mdi
         else:
             padlen = 239-mdi
-       
+
         r = self.copy()
         r.update('\x80'+('\x00'*(padlen+8))+length)
         return ''.join([struct.pack('!Q', i) for i in r._h[:self._output_size]])
-       
+
     def hexdigest(self):
         return self.digest().encode('hex')
-       
+
     def copy(self):
         return copy.deepcopy(self)
