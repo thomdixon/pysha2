@@ -2,7 +2,10 @@
 __author__ = 'Thomas Dixon'
 __license__ = 'MIT'
 
-import copy, struct, sys
+import copy
+import struct
+import sys
+
 
 def new(m=None):
     return sha256(m)
