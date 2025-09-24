@@ -1,11 +1,11 @@
-#!/usr/bin/python
-__author__ = 'Thomas Dixon'
-__license__ = 'MIT'
+#!/usr/bin/env python
+__author__ = "Thomas Dixon"
+__license__ = "MIT"
 
 from sha2.sha256 import sha256
 
 
-def new(m: bytes | None = None) -> 'sha224':
+def new(m: bytes | None = None) -> "sha224":
     return sha224(m)
 
 

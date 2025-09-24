@@ -1,18 +1,24 @@
 #!/usr/bin/python
-__author__ = 'Thomas Dixon'
-__license__ = 'MIT'
+__author__ = "Thomas Dixon"
+__license__ = "MIT"
 
 from sha2.sha512 import sha512
 
 
-def new(m: bytes | None = None) -> 'sha384':
+def new(m: bytes | None = None) -> "sha384":
     return sha384(m)
 
 
 class sha384(sha512):
-    # fmt: off
-    _h = (0xcbbb9d5dc1059ed8, 0x629a292a367cd507, 0x9159015a3070dd17, 0x152fecd8f70e5939,
-          0x67332667ffc00b31, 0x8eb44a8768581511, 0xdb0c2e0d64f98fa7, 0x47b5481dbefa4fa4)
-    # fmt: on
+    _h = (
+        0xCBBB9D5DC1059ED8,
+        0x629A292A367CD507,
+        0x9159015A3070DD17,
+        0x152FECD8F70E5939,
+        0x67332667FFC00B31,
+        0x8EB44A8768581511,
+        0xDB0C2E0D64F98FA7,
+        0x47B5481DBEFA4FA4,
+    )
     _output_size = 6
     digest_size = 48

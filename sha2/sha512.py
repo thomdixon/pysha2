@@ -1,13 +1,13 @@
 #!/usr/bin/python
-__author__ = 'Thomas Dixon'
-__license__ = 'MIT'
+__author__ = "Thomas Dixon"
+__license__ = "MIT"
 
 import copy
 import struct
 import sys
 
 
-def new(m: bytes | None = None) -> 'sha512':
+def new(m: bytes | None = None) -> "sha512":
     return sha512(m)
 
 
@@ -43,7 +43,7 @@ class sha512:
     digest_size = 64
 
     def __init__(self, m: bytes | None = None) -> None:
-        self._buffer = b''
+        self._buffer = b""
         self._counter = 0
 
         if m is not None:
@@ -54,7 +54,7 @@ class sha512:
 
     def _sha512_process(self, chunk: bytes) -> None:
         w = [0] * 80
-        w[0:16] = struct.unpack('!16Q', chunk)
+        w[0:16] = struct.unpack("!16Q", chunk)
 
         for i in range(16, 80):
             s0 = self._rotr(w[i - 15], 1) ^ self._rotr(w[i - 15], 8) ^ (w[i - 15] >> 7)
@@ -80,13 +80,19 @@ class sha512:
             b = a
             a = (t1 + t2) & 0xFFFFFFFFFFFFFFFF
 
-        self._h = [(x + y) & 0xFFFFFFFFFFFFFFFF for x, y in zip(self._h, [a, b, c, d, e, f, g, h], strict=True)]
+        self._h = [
+            (x + y) & 0xFFFFFFFFFFFFFFFF
+            for x, y in zip(self._h, [a, b, c, d, e, f, g, h], strict=True)
+        ]
 
     def update(self, m: bytes) -> None:
         if not m:
             return
         if not isinstance(m, bytes):
-            raise TypeError('%s() argument 1 must be bytes, not %s' % (sys._getframe().f_code.co_name, type(m).__name__))
+            raise TypeError(
+                "%s() argument 1 must be bytes, not %s"
+                % (sys._getframe().f_code.co_name, type(m).__name__)
+            )
 
         self._buffer += m
         self._counter += len(m)
@@ -97,7 +103,7 @@ class sha512:
 
     def digest(self) -> bytes:
         mdi = self._counter & 0x7F
-        length = struct.pack('!Q', self._counter << 3)
+        length = struct.pack("!Q", self._counter << 3)
 
         if mdi < 112:
             padlen = 111 - mdi
@@ -105,11 +111,11 @@ class sha512:
             padlen = 239 - mdi
 
         r = self.copy()
-        r.update(b'\x80' + (b'\x00' * (padlen + 8)) + length)
-        return b''.join([struct.pack('!Q', i) for i in r._h[: self._output_size]])
+        r.update(b"\x80" + (b"\x00" * (padlen + 8)) + length)
+        return b"".join([struct.pack("!Q", i) for i in r._h[: self._output_size]])
 
     def hexdigest(self) -> str:
         return self.digest().hex()
 
-    def copy(self) -> 'sha512':
+    def copy(self) -> "sha512":
         return copy.deepcopy(self)

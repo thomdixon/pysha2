@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
-__author__ = 'Thomas Dixon'
-__license__ = 'MIT'
+__author__ = "Thomas Dixon"
+__license__ = "MIT"
 
 from sha2.sha224 import sha224
 from sha2.sha256 import sha256

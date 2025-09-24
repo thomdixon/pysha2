@@ -1,6 +1,6 @@
 #!/usr/bin/python
-__author__ = 'Thomas Dixon'
-__license__ = 'MIT'
+__author__ = "Thomas Dixon"
+__license__ = "MIT"
 
 import copy
 import struct
@@ -39,7 +39,7 @@ class sha256:
     digest_size = 32
 
     def __init__(self, m: bytes | None = None):
-        self._buffer = b''
+        self._buffer = b""
         self._counter = 0
 
         if m is not None:
@@ -50,7 +50,7 @@ class sha256:
 
     def _sha256_process(self, c_in: bytes) -> None:
         w = [0] * 64
-        w[0:16] = struct.unpack('!16L', c_in)
+        w[0:16] = struct.unpack("!16L", c_in)
 
         for i in range(16, 64):
             s0 = self._rotr(w[i - 15], 7) ^ self._rotr(w[i - 15], 18) ^ (w[i - 15] >> 3)
@@ -76,13 +76,18 @@ class sha256:
             b = a
             a = (t1 + t2) & 0xFFFFFFFF
 
-        self._h = [(x + y) & 0xFFFFFFFF for x, y in zip(self._h, [a, b, c, d, e, f, g, h])]
+        self._h = [
+            (x + y) & 0xFFFFFFFF for x, y in zip(self._h, [a, b, c, d, e, f, g, h])
+        ]
 
     def update(self, m: bytes) -> None:
         if not m:
             return
         if not isinstance(m, bytes):
-            raise TypeError('%s() argument 1 must be bytes, not %s' % (sys._getframe().f_code.co_name, type(m).__name__))
+            raise TypeError(
+                "%s() argument 1 must be bytes, not %s"
+                % (sys._getframe().f_code.co_name, type(m).__name__)
+            )
 
         self._buffer += m
         self._counter += len(m)
@@ -93,7 +98,7 @@ class sha256:
 
     def digest(self) -> bytes:
         mdi = self._counter & 0x3F
-        length = struct.pack('!Q', self._counter << 3)
+        length = struct.pack("!Q", self._counter << 3)
 
         if mdi < 56:
             padlen = 55 - mdi
@@ -101,11 +106,11 @@ class sha256:
             padlen = 119 - mdi
 
         r = self.copy()
-        r.update(b'\x80' + (b'\x00' * padlen) + length)
-        return b''.join([struct.pack('!L', i) for i in r._h[: self._output_size]])
+        r.update(b"\x80" + (b"\x00" * padlen) + length)
+        return b"".join([struct.pack("!L", i) for i in r._h[: self._output_size]])
 
     def hexdigest(self) -> str:
         return self.digest().hex()
 
-    def copy(self) -> 'sha256':
+    def copy(self) -> "sha256":
         return copy.deepcopy(self)
